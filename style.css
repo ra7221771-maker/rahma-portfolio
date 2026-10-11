@@ -6406,3 +6406,11 @@ body.snapshot-modal-open{overflow:hidden}
 #tools .combined-tools-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}#tools .tool-group{min-width:0;padding:0 24px 0 0;border-right:1px solid rgba(0,0,0,.1)}#tools .tool-group:last-child{border:0;padding-right:0}#tools .tool-group .tool-category-head{display:block;margin-bottom:20px}#tools .tool-group h3{font-size:23px;line-height:1.2}#tools .tool-group .tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px}#tools .tool-group .tool-card{padding:18px 10px;min-width:0}#tools .tool-group .tool-card h4{font-size:14px}#tools .tool-group .tool-card p{font-size:12px;line-height:1.5}@media(max-width:900px){#tools .combined-tools-grid{grid-template-columns:1fr;gap:28px}#tools .tool-group{padding:0 0 24px;border-right:0;border-bottom:1px solid rgba(0,0,0,.1)}#tools .tool-group:last-child{padding:0}#tools .tool-group .tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 
 .magrina-preview-card{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:28px}.magrina-preview-card>img{width:100%;max-height:440px;object-fit:cover;border-radius:24px}.magrina-preview h2{font-size:clamp(48px,6vw,86px);margin:0 0 18px}.magrina-preview p{font-size:20px;line-height:1.65;max-width:500px;margin-bottom:25px}.magrina-page .nav nav{display:flex;flex-wrap:wrap;gap:20px}@media(max-width:700px){.magrina-preview-card{grid-template-columns:1fr;gap:26px}.magrina-page .nav{flex-wrap:wrap;gap:18px}.magrina-page .nav nav{font-size:12px}}
+
+/* Keep original video cards while deferring their media downloads. */
+.deferred-video{position:relative;width:100%;}
+.deferred-video video{display:block;width:100%;}
+.deferred-video-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:64px;height:64px;border:1px solid rgba(255,255,255,.65);border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:27px;cursor:pointer;z-index:3;box-shadow:0 4px 20px rgba(0,0,0,.18);}
+.deferred-video-play:hover{background:rgba(0,0,0,.85);}
+.deferred-video-play:focus-visible{outline:3px solid #fff;outline-offset:4px;}
+.deferred-video-play[hidden]{display:none;}

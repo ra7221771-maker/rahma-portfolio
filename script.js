@@ -1,4 +1,5 @@
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearElement = document.getElementById('year');
+if (yearElement) yearElement.textContent = new Date().getFullYear();
 
 document.querySelectorAll('.case-story-card').forEach((card) => {
   card.addEventListener('mousemove', (e) => {
@@ -18,6 +19,7 @@ document.querySelectorAll('.proof-toggle').forEach((button) => {
     const panel = document.getElementById(button.dataset.proof);
     if (!panel) return;
     panel.classList.toggle('open');
+    if (panel.classList.contains('open')) loadDeferredImages(panel);
     button.textContent = panel.classList.contains('open') ? 'Hide insights' : 'View insights';
   });
 });
@@ -31,6 +33,7 @@ const snapshotModal = document.getElementById('snapshot-modal');
 function openSnapshotModal() {
   if (!snapshotModal) return;
   snapshotModal.hidden = false;
+  loadDeferredImages(snapshotModal);
   document.body.classList.add('snapshot-modal-open');
 }
 
@@ -295,5 +298,51 @@ document.querySelectorAll('.tilt-popout').forEach((panel) => {
 
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape') closeMenu();
+  });
+})();
+
+
+/* Fetch hidden proof images only when their panel is opened. */
+function loadDeferredImages(container) {
+  container.querySelectorAll('img[data-deferred-src]').forEach((img) => {
+    img.src = img.dataset.deferredSrc;
+    delete img.dataset.deferredSrc;
+  });
+}
+
+/* Posters load near the viewport; video bytes load only after Play. */
+(function () {
+  const videos = document.querySelectorAll('.deferred-video video');
+  const loadPoster = (video) => {
+    if (video.dataset.deferredPoster) {
+      video.poster = video.dataset.deferredPoster;
+      delete video.dataset.deferredPoster;
+    }
+  };
+  const observer = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        loadPoster(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {rootMargin: '250px 0px'}) : null;
+  videos.forEach((video) => {
+    if (observer) observer.observe(video); else loadPoster(video);
+    const button = video.parentElement.querySelector('.deferred-video-play');
+    button.addEventListener('click', () => {
+      loadPoster(video);
+      video.querySelectorAll('source[data-deferred-src]').forEach((source) => {
+        source.src = source.dataset.deferredSrc;
+        delete source.dataset.deferredSrc;
+      });
+      video.controls = true;
+      video.load();
+      button.hidden = true;
+      const playRequest = video.play();
+      if (playRequest) playRequest.catch(() => {
+        /* Native controls remain available if playback needs another tap. */
+      });
+    }, {once: true});
   });
 })();
