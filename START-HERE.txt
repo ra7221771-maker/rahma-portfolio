@@ -1,0 +1,1 @@
+Complete portfolio with original media. Extract this ZIP into a new folder. Open index.html to preview. For Netlify publish this complete folder using Netlify CLI; the large original videos may stall browser drag-and-drop uploads. This package includes all images and videos and requires no earlier files.
